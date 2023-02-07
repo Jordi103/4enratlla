@@ -1,13 +1,9 @@
-# define LW 20
+#include <stdio.h>
+#include <stdlib.h>
 
-typedef struct partida{
-	char (*taulers)[N][N];
-	int ntorns;
-	char nom[LW];
-} Partida;
+#include "config.h"
 
 
-Partida *jugar_partida(void);
 void escriuTauler(FILE *fitxer, char tauler[N][N]);
 void llegeixTauler(FILE *fitxer, char tauler[N][N]);
 void escriuPartida(FILE *fitxer, Partida *P);

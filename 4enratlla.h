@@ -1,14 +1,12 @@
-# define N 8
-# define BUIDA '.'
-# define ORD 'O'
-# define HUMA 'X'
+#include<stdlib.h>
+#include<stdio.h>
+#include<time.h>
+
+# include "config.h"
+
 
 # define max(x,y) ((x>y)?x:y)
 # define min(x,y) ((x>y)?y:x)
-
-
-char ordinador = ORD;
-char huma = HUMA;
 
 
 void inicialitza_tauler(char tauler[N][N]);

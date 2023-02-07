@@ -1,60 +1,6 @@
-#include <stdio.h>
-#include <stdlib.h>
-
 #include "partides.h"
 
 
-Partida *jugar_partida(void){
-    int i;
-    char tauler[N][N];
-    Node *arrel;
-    Partida *P;
-    P=(Partida*)malloc(sizeof(Partida));
-    P->taulers=(char(*)[N][N])malloc(N*N*sizeof(char[N][N]));
-    P->ntorns=0;
-    inicialitza_tauler(tauler);
-    char opcio_inicial;
-    printf("Voleu fer la primera tirada?[s/n]\n");
-    scanf("%c",&opcio_inicial); getchar();
-    if (opcio_inicial==110){
-        aplicarTirada(tauler, rand()%8, ordinador);
-        copiaTauler(P->taulers[0], tauler);
-        P->ntorns++;
-    }
-    system("clear");
-    mostra_tauler(tauler);
-    while(1){
-        printf("Pròxima tirada?[1-8]\n");
-        scanf("%d", &i); getchar();
-        printf("\n");
-        aplicarTirada(tauler, max(0,min(i-1,7)), huma);
-        system("clear");
-        mostra_tauler(tauler);
-        copiaTauler(P->taulers[P->ntorns], tauler); P->ntorns++;
-        if(partidaAcabada(tauler,huma)==1){
-            printf("Has guanyat!\n");
-            mostra_tauler(tauler);
-            break;
-        }
-        arrel = (Node*)malloc(sizeof(Node));
-        copiaTauler(arrel->tauler,tauler);
-        arrel->nivell=0;
-        arrel->n_fills=determinaFills(tauler);
-        arrel->fills=(Node**)malloc(arrel->n_fills*sizeof(Node*));
-        creaArbre(arrel);
-        copiaTauler(tauler, minimax(arrel)->tauler);
-        esborraArbre(arrel);
-        copiaTauler(P->taulers[P->ntorns], tauler); P->ntorns++;
-        system("clear");
-        mostra_tauler(tauler);
-        if(partidaAcabada(tauler,ordinador)==1){
-            printf("Guanya l'ordinador.\n");
-            break;
-        }
-    }
-    getchar();
-    return P;
-}
 
 void escriuTauler(FILE *fitxer, char tauler[N][N]){
 	int i, j;

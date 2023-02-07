@@ -1,12 +1,7 @@
-# define NIV_MAX 4
+#include <stdlib.h>
 
-typedef struct node{
-	struct node **fills;
-	int n_fills;
-    int nivell;
-	char tauler[N][N];
-	double valor;
-} Node;
+#include "config.h"
+
 
 int determinaFills(char tauler[N][N]);
 Node *creaNode(Node *pare, int numFill);

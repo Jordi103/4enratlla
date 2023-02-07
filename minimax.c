@@ -1,7 +1,4 @@
-#include<stdlib.h>
-
 #include "minimax.h"
-
 
 
 int determinaFills(char tauler[N][N]){
