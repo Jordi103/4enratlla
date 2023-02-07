@@ -1,0 +1,17 @@
+7/2/23
+He creat el fitxer header config.h per emmagatzemar diverses variables
+de configuració utilitzades en diversos fitxers de codi. En aquest
+fitxers també he introduït diverses definicions que són compartides
+en més d'un fitxer, però que no són de configuració pròpiament.
+
+Aleshores he mogut tots els includes de cada fitxer c al seu fitxer h,
+i des del fitxer h incloc totes els dependències. Algunes d'aquestes
+dependències són als fitxers .h originals i altres a config.h.
+
+
+Ara mateix hi ha errors en compilar deguts a conflictes en trobar
+les definicions de les funcions en els fitxers. Per solucionar-ho:
+
+	- Trobar en cada funció CRIDADA	en cada fitxer c, on està definida
+	aquesta funció.
+	- Analitzar el graf de dependències i modificar-lo conseqüentment.
