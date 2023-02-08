@@ -2,66 +2,67 @@
 #include<stdio.h>
 #include<time.h>
 
-# include "config.h"
+#include "config.h"
+#include "4enratlla.h"
 #include "minimax.h"
 
 
-int determinaFills(char tauler[N][N]){
-    int numFills, j;
-    numFills=0;
+int determine_children(char board[N][N]){
+    int n_children, j;
+    n_children=0;
     for (j=0; j<N; j++){
-        if(determinaFila(tauler, j)>-1){
-            numFills++;
+        if(determine_row(board, j)>-1){
+            n_children++;
         }
     }
-    return numFills;
+    return n_children;
 }
 
-Node *creaNode(Node *pare, int numFill){
+Node *new_node(Node *parent, int child_num){
     Node *p=(Node*)malloc(sizeof(Node));
-    p->nivell=pare->nivell+1;
-    copiaTauler(p->tauler,pare->tauler);
-    int columna; char jugador;
-    columna=determinaColumna(p->tauler, numFill);
-    if(p->nivell%2==1){
-        jugador = ORD;
+    p->level=parent->level+1;
+    copy_board(p->board,parent->board);
+    int column; char player;
+    column=determine_column(p->board, child_num);
+    if(p->level%2==1){
+        player = COMPUTER;
     } else {
-        jugador = HUMA;
+        player = HUMAN;
     }
-    aplicarTirada(p->tauler,columna,jugador);
-    if((p->nivell<NIV_MAX)&&(partidaAcabada(p->tauler,jugador)!=1)){
-        p->n_fills=determinaFills(p->tauler);
-        p->fills=(Node**)malloc(p->n_fills*sizeof(Node*));
+    apply_roll(p->board,column,player);
+    if((p->level<LVL_MAX)&&(game_finished(p->board,player)!=1)){
+        p->n_children=determine_children(p->board);
+        p->children=(Node**)malloc(p->n_children*sizeof(Node*));
     } else {
-        p->n_fills=0;
-        p->fills=NULL;
-        p->valor=heuristica(p->tauler, p->nivell);
+        p->n_children=0;
+        p->children=NULL;
+        p->value=heuristic(p->board, p->level);
     }
     return p;
 }
 
-// passem el nivell del pare, aquest nivell és sempre estrictament inferior a NIV_MAX
-void creaArbre(Node *pare){
+// passem el level del parent, aquest level és sempre estrictament inferior a LVL_MAX
+void new_tree(Node *parent){
     int i;
-    for(i=0; i<pare->n_fills; i++){
-        pare->fills[i]=creaNode(pare, i);
-//      Si nivell+1=NIV_MAX el pare automaticament tindra n_fills=0
-        creaArbre(pare->fills[i]);
+    for(i=0; i<parent->n_children; i++){
+        parent->children[i]=new_node(parent, i);
+//      Si level+1=LVL_MAX el parent automaticament tindra n_children=0
+        new_tree(parent->children[i]);
     }
 }
 
-void esborraArbre(Node *arrel){
+void delete_tree(Node *root){
     int i;
-    for(i=0; i<arrel->n_fills; i++) {
-        esborraArbre(arrel->fills[i]);
+    for(i=0; i<root->n_children; i++) {
+        delete_tree(root->children[i]);
     }
-    if(arrel->n_fills>0){
-    	free(arrel->fills);
+    if(root->n_children>0){
+    	free(root->children);
     } 
-    free(arrel);
+    free(root);
 }
 
-int posicioMaxim(double *v, int n){
+int argmax(double *v, int n){
 	int i,l;
 	double M;
     l=0;
@@ -75,7 +76,7 @@ int posicioMaxim(double *v, int n){
 	return l;
 }
 
-int posicioMinim(double *v, int n){
+int argmin(double *v, int n){
 	int i,l;
 	double m;
     l=0;
@@ -89,38 +90,38 @@ int posicioMinim(double *v, int n){
 	return l;
 }
 
-Node *minimax(Node *arrel){
+Node *minimax(Node *root){
 	int i,l;
 	double *v;
-	if (arrel->n_fills==0){
-		return arrel;
+	if (root->n_children==0){
+		return root;
 	} else {
-		v = (double*)malloc(arrel->n_fills*sizeof(double));
-		for (i=0; i<arrel->n_fills; i++){
-			(arrel->fills[i])->valor=minimax(arrel->fills[i])->valor;
-			v[i]=(arrel->fills[i])->valor;
+		v = (double*)malloc(root->n_children*sizeof(double));
+		for (i=0; i<root->n_children; i++){
+			(root->children[i])->value=minimax(root->children[i])->value;
+			v[i]=(root->children[i])->value;
 		}	
-		if (arrel->nivell%2==0){
-			l=posicioMaxim(v, arrel->n_fills);
+		if (root->level%2==0){
+			l=argmax(v, root->n_children);
 		} else {
-		    l=posicioMinim(v, arrel->n_fills);
+		    l=argmin(v, root->n_children);
 		}
         free(v);
-        return arrel->fills[l];
+        return root->children[l];
 	}
 }
 
-double heuristica(char tauler[N][N], int nivell){
+double heuristic(char board[N][N], int level){
     int h,o; char H, O;
-    H=HUMA;
-    O=ORD;
-    h=partidaAcabada(tauler, H);
-    o=partidaAcabada(tauler, O);
+    H=HUMAN;
+    O=COMPUTER;
+    h=game_finished(board, H);
+    o=game_finished(board, O);
     if(h==1){
-        return 0+0.01*1./nivell;
+        return 0+0.01*1./level;
     }
     if(o==1){
-        return 1-0.01*nivell;
+        return 1-0.01*level;
     }
     return 0.5+(0.05*rand())/RAND_MAX;
 }
