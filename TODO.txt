@@ -22,3 +22,5 @@ Hem combinat 4enratlla i partides en un sol document, i hem modificat
 la makefile d'acord amb això.
 
 A partir d'aquí falta traduir i comentar.
+A més, utilitzarem la convenció amb barra baixa en lloc de majúscules
+per els noms de les funcions.
