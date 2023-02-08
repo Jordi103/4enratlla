@@ -6,13 +6,11 @@ all: 4enratlla
 	gcc -c -Wall -O2 4enratlla.c
 minimax.o: minimax.c
 	gcc -c -Wall -O2 minimax.c
-partides.o: partides.c
-	gcc -c -Wall -O2 partides.c
 
 
 # Fitxers executables
-4enratlla: 4enratlla.o minimax.o partides.o
-	gcc -o 4enratlla 4enratlla.o minimax.o partides.o
+4enratlla: 4enratlla.o minimax.o
+	gcc -o 4enratlla 4enratlla.o minimax.o
 
 
 # Neteja

@@ -1,7 +1,3 @@
-#include <stdlib.h>
-
-#include "config.h"
-
 
 int determinaFills(char tauler[N][N]);
 Node *creaNode(Node *pare, int numFill);

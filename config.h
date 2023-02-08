@@ -9,8 +9,8 @@
 # define ORD 'O'
 # define HUMA 'X'
 
-char ordinador = ORD;
-char huma = HUMA;
+//char ordinador = ORD;
+//char huma = HUMA;
 
 // Longitud màxima del nom d'una partida
 # define LW 20

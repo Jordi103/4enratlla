@@ -15,3 +15,10 @@ les definicions de les funcions en els fitxers. Per solucionar-ho:
 	- Trobar en cada funció CRIDADA	en cada fitxer c, on està definida
 	aquesta funció.
 	- Analitzar el graf de dependències i modificar-lo conseqüentment.
+
+
+8/2/23
+Hem combinat 4enratlla i partides en un sol document, i hem modificat
+la makefile d'acord amb això.
+
+A partir d'aquí falta traduir i comentar.
