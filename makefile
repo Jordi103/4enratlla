@@ -17,5 +17,5 @@ minimax.o: minimax.c
 clean:
 	rm -f *.o
 realclean:
-	rm -f *.o 4enratlla partides.dat
+	rm -f *.o 4enratlla games.dat
 	

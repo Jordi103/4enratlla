@@ -227,7 +227,7 @@ Game *play_game(void){
         show_board(board);
         copy_board(G->boards[G->nturns], board); G->nturns++;
         if(game_finished(board,HUMAN)==1){
-            printf("Has guanyat!\n");
+            printf("You win!\n");
             show_board(board);
             break;
         }
@@ -245,7 +245,7 @@ Game *play_game(void){
         system("clear");
         show_board(board);
         if(game_finished(board,COMPUTER)==1){
-            printf("Guanya l'ordinador.\n");
+            printf("The computer wins.\n");
             break;
         }
     }
