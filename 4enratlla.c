@@ -33,7 +33,7 @@ void initialize_board(char board[N][N]){
     }
 }
 
-// copia board 2 a board 1
+// copy board 2 to board 1
 void copy_board(char board1[N][N], char board2[N][N]){
     int i,j;
     for (i=0; i<N; i++){
@@ -59,7 +59,7 @@ void show_board(char board[N][N]){
 }
 
 
-// Trobar la k-essima columna lliure
+// Find kth free column
 int determine_column(char board[N][N], int k){
     int j,colLliure;
     colLliure=-1;
@@ -100,7 +100,7 @@ void apply_roll(char board[N][N], int columna, char jugador){
 
 int game_finished(char board[N][N], char jugador){
     int i, j, k, ratxa;
-//  Mirem per files
+//  Look rows
     for (i=0; i<N; i++){
         ratxa=0;
         for (j=0; j<N; j++){
@@ -114,7 +114,7 @@ int game_finished(char board[N][N], char jugador){
             }
         }
     }
-//  Mirem per columnes
+//  Look columns
     for (j=0; j<N; j++){
         ratxa=0;
         for (i=0; i<N; i++){
@@ -128,7 +128,7 @@ int game_finished(char board[N][N], char jugador){
             }
         }
     }
-//  Mirem les diagonals 
+//  Look diagonals
     for (i=0; i<N; i++){
         ratxa=0;
         for(k=max(-i,1-N+i); k<=min(i,N-i-1); k++){
@@ -142,7 +142,7 @@ int game_finished(char board[N][N], char jugador){
             }
         }
     }
-//  Mateixa direcció, una casella desplaçada
+//  Diagonals, one off
     for (i=0; i<N; i++){
         ratxa=0;
         for(k=max(2-N+i,-i); k<=min(N-1-i,i+1); k++){
@@ -183,7 +183,8 @@ int game_finished(char board[N][N], char jugador){
             }
         }
     }
-//  Mirem si hi ha alguna casella buida al board.
+    
+//  Look if there's an empty position in the board
     for(i=0; i<N; i++){
         for(j=0; j<N; j++){
             if(board[i][j]==EMPTY){
@@ -202,9 +203,11 @@ Game *play_game(void){
     G=(Game *)malloc(sizeof(Game));
     G->boards=(char(*)[N][N])malloc(N*N*sizeof(char[N][N]));
     G->nturns=0;
+    
     initialize_board(board);
+    
     char initial_option;
-    printf("Voleu fer la primera tirada?[s/n]\n");
+    printf("Do you want to make the first move?[s/n]\n");
     scanf("%c",&initial_option); getchar();
     if (initial_option==110){
         apply_roll(board, rand()%8, COMPUTER);
@@ -213,8 +216,10 @@ Game *play_game(void){
     }
     system("clear");
     show_board(board);
+    
     while(1){
-        printf("Pròxima tirada?[1-8]\n");
+		// Next move by human
+        printf("Next move?[1-8]\n");
         scanf("%d", &i); getchar();
         printf("\n");
         apply_roll(board, max(0,min(i-1,7)), HUMAN);
@@ -226,6 +231,8 @@ Game *play_game(void){
             show_board(board);
             break;
         }
+        
+        // Next move by computer
         root = (Node*)malloc(sizeof(Node));
         copy_board(root->board,board);
         root->level=0;
@@ -254,21 +261,25 @@ int show_menu(void){
     FILE *games;
     games=fopen("games.dat", "r+");
     system("clear");
+    
+    // Show menu
 	printf("========================4ENRATLLA=========================\n");
-	printf("1. Jugar partida nova.\n");
-	printf("2. Veure partida anterior.\n");
-    printf("\n0. Sortir.\n");
+	printf("1. Play new game.\n");
+	printf("2. Watch previous game.\n");
+    printf("\n0. Exit.\n");
     scanf("%d", &i); getchar();
     system("clear");
+    
+    // Play game
     if (i==1){
         G=play_game();
-        printf("Voleu enregistrar la partida?[s/n]\n");
+        printf("Do you want to record this game?[s/n]\n");
         scanf("%c", &c); getchar();
         if(c=='s'){
-            printf("Doneu-li un name 20 o menys caràcters:\n");
+            printf("Give it a name 20 characters long or less:\n");
             scanf("%s", name); getchar();
             while(valid_name(games, name)==1){
-                printf("Si us plau introduiu un name no utilitzat. Els names en ús són:\n");
+                printf("Please input another name. Used names are the following:\n");
                 read_names(games);
                 scanf("%s", name); getchar();
             }
@@ -277,14 +288,18 @@ int show_menu(void){
         }
         free(G);
     }
+    
+    // Watch game
     if(i==2){
         read_names(games);
-        printf("\nQuina partida voleu veure? \n");
+        printf("\nWhat game do you want to watch? \n");
         scanf("%s", name); getchar();
         G=find_game(games, name);
         watch_game(G);
         free(G);
     }
+    
+    // Exit
     if(i==0){
         return 1;
     }
@@ -293,7 +308,6 @@ int show_menu(void){
 }
 
 
-// antic partides
 void write_board(FILE *filename, char board[N][N]){
 	int i, j;
 	for (i=0; i<N; i++){
@@ -354,7 +368,7 @@ void read_names(FILE *filename){
     char c, name[LW];
     int s;
     rewind(filename);
-    printf("Partides enregistrades:\n");
+    printf("Recorded games:\n");
     do {
         s=fscanf(filename, "%c", &c);
         if(c=='#'){
@@ -379,8 +393,8 @@ Game *find_game(FILE *filename, char name[LW]){
             free(G);
         }
     } while(s!=EOF);
-    printf("No s'ha trobat la partida \"%s\".\n", name);
-    printf("Introduiu un name de partida vàlid.\n");
+    printf("Could not find game named \"%s\".\n", name);
+    printf("Please input a valid game name.\n");
     scanf("%s", name); getchar();
     G=find_game(filename, name);
     return G;

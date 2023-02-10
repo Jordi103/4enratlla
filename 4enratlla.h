@@ -4,7 +4,6 @@
 # define min(x,y) ((x>y)?y:x)
 
 
-// antic 4enratlla
 void initialize_board(char board[N][N]);
 void copy_board(char board1[N][N], char board2[N][N]);
 void show_board(char board[N][N]);
@@ -15,7 +14,6 @@ int game_finished(char board[N][N], char player);
 Game *play_game(void);
 int show_menu(void);
 
-// antic partides
 void write_board(FILE *filename, char board[N][N]);
 void read_board(FILE *filename, char board[N][N]);
 void write_game(FILE *filename, Game *G);

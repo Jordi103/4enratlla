@@ -1,19 +1,19 @@
 
 all: 4enratlla
 
-# Fitxers objecte
+# Object files
 4enratlla.o: 4enratlla.c
 	gcc -c -Wall -O2 4enratlla.c
 minimax.o: minimax.c
 	gcc -c -Wall -O2 minimax.c
 
 
-# Fitxers executables
+# Executable files
 4enratlla: 4enratlla.o minimax.o
 	gcc -o 4enratlla 4enratlla.o minimax.o
 
 
-# Neteja
+# Clean
 clean:
 	rm -f *.o
 realclean:

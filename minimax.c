@@ -41,12 +41,10 @@ Node *new_node(Node *parent, int child_num){
     return p;
 }
 
-// passem el level del parent, aquest level és sempre estrictament inferior a LVL_MAX
 void new_tree(Node *parent){
     int i;
     for(i=0; i<parent->n_children; i++){
         parent->children[i]=new_node(parent, i);
-//      Si level+1=LVL_MAX el parent automaticament tindra n_children=0
         new_tree(parent->children[i]);
     }
 }

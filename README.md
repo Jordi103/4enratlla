@@ -1,6 +1,17 @@
 # 4enratlla
-Programa per jugar al quatre en ratlla.
+Program for playing 4-in-a-row against the computer. To compile the
+program run
 
-Per compilar, introduïu la comanda 
+```
+make
+```
 
-    gcc 4enratlla.c -o 4enratlla
+Then, for running the program
+
+```
+./4enratlla
+```
+
+The program allows the player to store played games and watch them again.
+These games are stored in the games.dat file and are intended to be
+watched from the corresponding option in the program's menu.
